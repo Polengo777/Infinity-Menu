@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Infinity Menu</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        html,body{height:100%}
+        body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#0a0a0a;color:#fff;overflow-x:hidden}
+        .stars-bg{position:fixed;inset:0;pointer-events:none;z-index:0}
+        .star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle 3s infinite}
+        @keyframes twinkle{0%,100%{opacity:.3}50%{opacity:1}}
+        .network-lines{position:fixed;inset:0;pointer-events:none;opacity:.1;z-index:0}
+        header{position:fixed;top:0;left:0;right:0;background:linear-gradient(180deg,rgba(15,5,5,.9),rgba(10,10,10,.95));backdrop-filter:blur(8px);padding:14px 36px;display:flex;align-items:center;justify-content:space-between;z-index:1000;border-bottom:1px solid rgba(255,255,255,.04)}
+        .logo-container{display:flex;align-items:center;gap:12px}
+        .logo-svg{width:36px;height:36px;object-fit:contain;display:block}
+        .logo-text{font-size:18px;font-weight:700;color:#fff}
+        .verified-badge{width:18px;height:18px;background:#1da1f2;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px}
+        .search-bar{flex:0 0 480px;max-width:48%;position:relative}
+        .search-bar input{width:100%;padding:12px 16px 12px 44px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:28px;color:#fff;font-size:15px}
+        .search-bar input::placeholder{color:rgba(255,255,255,.45)}
+        .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.55)}
+        .header-actions{display:flex;gap:12px;align-items:center}
+        .cart-btn,.login-btn{padding:9px 18px;border-radius:10px;border:1px solid rgba(255,255,255,.06);cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600}
+        .cart-btn{background:transparent;color:#fff}
+        .login-btn{background:#c41b1b;color:#fff;border:none;box-shadow:0 6px 20px rgba(196,27,27,.18)}
+        .login-btn:hover{transform:translateY(-2px)}
+        .hero{position:relative;min-height:88vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:110px 20px;background:radial-gradient(ellipse at top right, rgba(200,10,10,.08), transparent 20%), linear-gradient(180deg,rgba(30,10,10,.25),rgba(5,5,5,.9) 60%)}
+        .hero-content{position:relative;z-index:1;max-width:980px}
+        .hero-title{font-size:64px;font-weight:900;background:linear-gradient(90deg,#ff0fa1,#ff004f);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:18px;text-shadow:0 0 60px rgba(255,0,120,.18)}
+        .hero-subtitle{font-size:18px;color:rgba(255,255,255,.78);line-height:1.7;margin-bottom:28px}
+        .cta-button{background:#e01b1b;color:#fff;border:none;padding:14px 34px;font-size:15px;font-weight:700;border-radius:12px;cursor:pointer;box-shadow:0 10px 34px rgba(224,27,27,.22)}
+        .cta-button:hover{transform:translateY(-3px)}
+        .why-choose{padding:72px 40px 40px;z-index:1}
+        .why-choose h2{text-align:center;font-size:36px;font-weight:800;margin-bottom:46px}
+        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;max-width:1100px;margin:0 auto}
+        .feature-card{background:linear-gradient(180deg,rgba(30,6,6,.7),rgba(18,6,6,.65));padding:28px;border-radius:14px;border:1px solid rgba(255,255,255,.03);text-align:center}
+        .feature-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;background:rgba(255,255,255,.03);font-size:24px}
+        .feature-card h3{font-size:18px;margin-bottom:8px}
+        .feature-card p{color:rgba(255,255,255,.7);font-size:14px;line-height:1.5}
+        .products-section{padding:40px;position:relative;z-index:1}
+        .category-title{display:inline-block;padding:10px 20px;border-radius:999px;background:rgba(0,0,0,.6);border:2px solid #2b2b2b;color:#d8ffd8;font-weight:800;margin:12px 0}
+        .category-title.spoofer{background:linear-gradient(90deg,rgba(139,0,0,.18),rgba(220,20,60,.08));border:2px solid rgba(220,20,60,.15);color:#ffdfe0;font-size:20px;padding:12px 28px}
+        .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;max-width:1400px;margin:20px auto 80px}
+        .product-card{background:linear-gradient(180deg,rgba(30,6,6,.75),rgba(15,6,6,.8));border-radius:14px;border:1px solid rgba(255,0,0,.06);overflow:hidden;position:relative;display:flex;flex-direction:column;transition:transform .22s,box-shadow .22s}
+        .product-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(255,0,0,.12)}
+        .product-image{width:100%;height:170px;background-size:cover;background-position:center;border-bottom:1px solid rgba(255,255,255,.02)}
+        .product-image.menu-img{background-image:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.2)),url('Menu.png')}
+        .product-image.spoofer-img{background-image:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.2)),url('Menu.png')}
+        .product-info{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}
+        .product-name{font-size:16px;font-weight:800;color:#fff}
+        .product-price{font-size:20px;font-weight:900;color:#fff}
+        .product-payment{font-size:13px;color:rgba(255,255,255,.65)}
+        .product-badges{display:flex;gap:8px;margin-top:6px}
+        .badge-icon{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center}
+        .buy-button{margin-top:auto;background:transparent;border:1px solid rgba(255,255,255,.06);padding:12px;border-radius:10px;color:#fff;font-weight:800;cursor:pointer}
+        .buy-button:hover{background:rgba(255,255,255,.02)}
+        @media(max-width:900px){.search-bar{flex-basis:100%;order:3;margin-top:14px}.hero-title{font-size:40px}.products-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}}
+    </style>
+</head>
+<body>
+    <div class="stars-bg" id="stars"></div>
+    <canvas class="network-lines" id="network"></canvas>
+
+    <header>
+        <div class="logo-container">
+            <img src="Logo.png" alt="Infinity Menu" class="logo-svg" />
+            <span class="logo-text">Infinity Menu</span>
+            <div class="verified-badge">✓</div>
+        </div>
+
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Procure pelo nome do produto" />
+        </div>
+
+        <div class="header-actions">
+            <button class="cart-btn" onclick="window.open('https://discord.gg/ktvMfhMEtr','_blank')">🛒 Carrinho</button>
+            <button class="login-btn" onclick="window.open('https://discord.gg/ktvMfhMEtr','_blank')">🔐 Fazer login</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">【Infinity Menu】</h1>
+            <p class="hero-subtitle">A melhor loja de Cheats para Roblox, oferecendo soluções inovadoras e de <strong>alta qualidade</strong> para melhorar a sua experiência de jogo.</p>
+            <button class="cta-button" onclick="window.open('https://discord.gg/ktvMfhMEtr','_blank')">Entre em nosso Servidor →</button>
+        </div>
+    </section>
+
+    <section class="why-choose">
+        <h2>Por Que Escolher a Nossa Loja?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Melhor Preço</h3>
+                <p>Valores totalmente em conta, pague apenas uma única vez e tenha acesso imediato.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Atualizações</h3>
+                <p>As atualizações são feitas regularmente, garantindo a melhor experiência para nossos clientes.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Segurança</h3>
+                <p>Todas as informações em nosso site são criptografadas e protegidas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="products-section">
+        <div class="category-title">Infinity Menu</div>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image menu-img"></div>
+                <div class="product-info">
+                    <div class="product-name">Infinity Menu Diario</div>
+                    <div class="product-price">R$5.00</div>
+                    <div class="product-payment">À vista no Pix</div>
+                    <div class="product-badges">
+                        <div class="badge-icon">💎</div>
+                        <div class="badge-icon">⚡</div>
+                    </div>
+                    <button class="buy-button" onclick="window.open('https://discord.gg/ktvMfhMEtr','_blank')">🛒 Comprar agora</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image menu-img"></div>
+                <div class="product-info">
+                    <div class="product-name">Infinity Menu Semanal</div>
+                    <div class="product-price">R$8.00</div>
+                    <div class="product-payment">À vista no Pix</div>
+                    <div class="product-badges">
+                        <div class="badge-icon">💎</div>
+                        <div class="badge-icon">⚡</div>
+                    </div>
+                    <button class="buy-button" onclick="window.open('https://discord.gg/ktvMfhMEtr','_blank')">🛒 Comprar agora</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image menu-img"></div>
+                <div class="product-info">
+                    <div class="product-name">Infinity Menu Mensal</div>
+                    <div class="product-price">R$12.00</div>
+                    <div class="product-payment">À vista no Pix</div>
+                    <div class="product-badges">
+                        <div class="badge-icon">💎</div>
+                        <div class="badge-icon">⚡</div>
+                    </div>
+                    <button class="buy-button" onclick="window.open('https://discord.gg/ktvMfhMEtr','_blank')">🛒 Comprar agora</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image menu-img"></div>
+                <div class="product-info">
+                    <div class="product-name">Infinity Menu Lifetime</div>
+                    <div class="product-price">R$16.90</div>
+                    <div class="product-payment">À vista no Pix</div>
+                    <div class="product-badges">
+                        <div class="badge-icon">💎</div>
+                        <div class="badge-icon">⚡</div>
+                    </div>
+                    <button class="buy-button" onclick="window.open('https://discord.gg/ktvMfhMEtr','_blank')">🛒 Comprar agora</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-title spoofer">Infinity Spoofer</div>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image spoofer-img"></div>
+                <div class="product-info">
+                    <div class="product-name">Infinity Spoofer Lifetime</div>
+                    <div class="product-price">R$7.99</div>
+                    <div class="product-payment">À vista no Pix</div>
+                    <div class="product-badges">
+                        <div class="badge-icon">💎</div>
+                    </div>
+                    <button class="buy-button" onclick="window.open('https://discord.gg/ktvMfhMEtr','_blank')">🛒 Comprar agora</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 120; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.left = Math.random() * 100 + '%';
+            s.style.top = Math.random() * 100 + '%';
+            s.style.animationDelay = (Math.random() * 3) + 's';
+            starsContainer.appendChild(s);
+        }
+
+        const canvas = document.getElementById('network');
+        const ctx = canvas.getContext && canvas.getContext('2d');
+        function resizeCanvas() {
+            if (!ctx) return;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        const particles = [];
+        const particleCount = 48;
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * (canvas.width || 1),
+                y: Math.random() * (canvas.height || 1),
+                vx: (Math.random() - 0.5) * 0.6,
+                vy: (Math.random() - 0.5) * 0.6
+            });
+        }
+        function drawNetwork() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            });
+            ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 140) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawNetwork);
+        }
+        drawNetwork();
+        window.addEventListener('resize', resizeCanvas);
+    </script>
+</body>
+</html>
